@@ -101,7 +101,7 @@
                             <div class="layui-input-inline">
                                 <select name="is_promoter" lay-verify="is_promoter">
                                     <option value="">全部</option>
-                                    <option value="1">推广员</option>
+                                    <option value="1">金牌会员</option>
                                     <option value="0">普通用户</option>
                                 </select>
                             </div>

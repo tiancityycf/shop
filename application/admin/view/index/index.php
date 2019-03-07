@@ -289,8 +289,8 @@
                 $('#reflectnum').html(data.reflectnum + '个');
             });
         }
-        getnotice();
-        setInterval(getnotice, 3000);
+        //getnotice();
+        //setInterval(getnotice, 3000);
     });
 
 </script>

@@ -92,7 +92,7 @@
                 is_promoter:[
                     {name:'全部',value:''},
                     {name:'普通用户',value:0},
-                    {name:'推广员',value:1},
+                    {name:'金牌会员',value:1},
                 ],
                 is_status:[
                     {name:'全部',value:''},
