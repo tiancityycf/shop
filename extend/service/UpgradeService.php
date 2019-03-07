@@ -8,7 +8,7 @@ use service\HttpService;
 class UpgradeService extends FileService
 {
     //请求域名
-    public static $domain='http://shop.crmeb.net/';
+    public static $domain='http://www.baidu.com/';
     //及时更新网址信息
     public static $updatewebinfourl ='index.php/admin/server.upgrade_api/updatewebinfo.html';
     //公共接口地址 获取版本号
