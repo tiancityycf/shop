@@ -29,6 +29,7 @@ use app\routine\model\store\StoreCategory;
 use app\routine\model\store\StoreProduct;
 use app\routine\model\store\StoreSeckill;
 use app\routine\model\user\User;
+use app\routine\model\user\UserOrder;
 use app\routine\model\user\UserNotice;
 use app\routine\model\store\StoreCouponIssue;
 use app\routine\model\store\StoreCouponIssueUser;
