@@ -807,9 +807,10 @@ class AuthApi extends AuthController{
         }else{
             $list = UserOrder::getUserOrderList($this->userInfo['uid'],$type,$first,$limit);
         }
+        $status = array('待发货','已发货');
         foreach ($list as $key => &$value) {
-            $value['addtime'] = date("Y-m-d H:i",$value['addtime']);
-            //查询商品详情
+            $value['add_time'] = date("Y-m-d H:i",$value['add_time']);
+            $value['status_text'] = $status[$value['status']];
         }
         return JsonService::successful($list);
     }
