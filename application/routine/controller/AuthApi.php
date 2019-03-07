@@ -799,6 +799,20 @@ class AuthApi extends AuthController{
         return JsonService::successful($list);
     }
 
+    public function get_user_order_list_new($type = '',$first = 0, $limit = 8,$search = ''){
+        if($search){
+            $order = StoreOrder::searchUserOrder($this->userInfo['uid'],$search)?:[];
+            $list = $order == false ? [] : [$order];
+        }else{
+            $list = StoreOrder::getUserOrderList($this->userInfo['uid'],$type,$first,$limit);
+        }
+        foreach ($list as $key => &$value) {
+            $value['addtime'] = date("Y-m-d H:i",$value['addtime']);
+            //查询商品详情
+        }
+        return JsonService::successful($list);
+    }
+
     /**
      * 订单详情页
      * @param string $order_id
