@@ -801,10 +801,10 @@ class AuthApi extends AuthController{
 
     public function get_user_order_list_new($type = '',$first = 0, $limit = 8,$search = ''){
         if($search){
-            $order = StoreOrder::searchUserOrder($this->userInfo['uid'],$search)?:[];
+            $order = UserOrder::searchUserOrder($this->userInfo['uid'],$search)?:[];
             $list = $order == false ? [] : [$order];
         }else{
-            $list = StoreOrder::getUserOrderList($this->userInfo['uid'],$type,$first,$limit);
+            $list = UserOrder::getUserOrderList($this->userInfo['uid'],$type,$first,$limit);
         }
         foreach ($list as $key => &$value) {
             $value['addtime'] = date("Y-m-d H:i",$value['addtime']);
