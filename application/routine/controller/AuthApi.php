@@ -30,6 +30,7 @@ use app\routine\model\store\StoreProduct;
 use app\routine\model\store\StoreSeckill;
 use app\routine\model\user\User;
 use app\routine\model\user\UserOrder;
+use app\routine\model\user\UserGames;
 use app\routine\model\user\UserNotice;
 use app\routine\model\store\StoreCouponIssue;
 use app\routine\model\store\StoreCouponIssueUser;
@@ -474,6 +475,46 @@ class AuthApi extends AuthController{
         else return JsonService::successful();
     }
 
+    /**
+     * 添加游戏
+     * @param $gameid
+     * @param string $category
+     * @return \think\response\Json
+     */
+    public function game_add(){
+		$data = [];
+		
+		$game_id = $_POST['game_id'];
+		$p = explode('-',$game_id);
+		if(count($p)!=2){
+			return JsonService::fail(UserGames::getErrorInfo("游戏ID错误"));
+		}else{
+			$conf = config("game_lists");
+			if(!isset($conf[$p[1]])){
+				return JsonService::fail(UserGames::getErrorInfo('游戏ID缺少配置'));
+			}
+			$data['game_id'] = $p[1];
+			$data['open_id'] = $p[0];
+			$data['game_name'] = $conf[$p[1]];
+			$data['uid'] = $this->userInfo['uid'];
+			$data['add_time'] = time();
+			$res = UserGames::set($data);
+			if(!$res) return JsonService::fail(UserGames::getErrorInfo());
+			else return JsonService::successful();
+		}
+    }
+    /**
+     * 我的游戏
+     * @param $gameid
+     * @param string $category
+     * @return \think\response\Json
+     */
+    public function game_list(){
+		$w['uid'] = $this->userInfo['uid'];
+        $res['games'] = UserGames::where($w)->select();
+        $res['conf'] = config("game_lists");
+        return JsonService::successful('ok',$res);
+    }
     /**
      * 添加收藏
      * @param $productId
