@@ -35,6 +35,65 @@ class UserExtract extends ModelBasic
         1 =>'已提现'
     );
 
+    public static function userIntegral($userInfo,$data){
+        if(!in_array($data['extract_type'],self::$extractType))
+            return self::setErrorInfo('提现方式不存在');
+        $userInfo = User::get($userInfo['uid']);
+        if($data['money'] > $userInfo['integral']) return self::setErrorInfo('积分不足');;
+        $balance = bcsub($userInfo['integral'],$data['money'],2);
+        $insertData = [
+            'uid'=>$userInfo['uid'],
+            'extract_type'=>$data['extract_type'],
+            'extract_price'=>(int)$data['money'],
+            'add_time'=>time(),
+            'balance'=>$balance,
+            'status'=>self::AUDIT_STATUS
+        ];
+        if(isset($data['$name'])){
+            $insertData['real_name']=$data['$name'];
+        }else{
+            $insertData['real_name']='';
+        }
+        if(isset($data['cardnum'])){
+            $insertData['bank_code']=$data['cardnum'];
+        }else{
+            $insertData['bank_code']='';
+        }
+        if(isset($data['bankname'])){
+            $insertData['bank_address']=$data['bankname'];
+        }else{
+            $insertData['bank_address']='';
+        }
+        if(isset($data['weixin'])){
+            $insertData['wechat']=$data['weixin'];
+        }else{
+            $insertData['wechat']='';
+        }
+        if($data['extract_type'] == 'alipay'){
+            if(!$data['alipay_code']) return self::setErrorInfo('请输入支付宝账号');
+            $insertData['alipay_code'] = $data['alipay_code'];
+            $mark = '使用支付宝提现'.$insertData['extract_price'].'分';
+        }elseif($data['extract_type'] == 'bank'){
+            if(!$data['cardnum']) return self::setErrorInfo('请输入银行卡账号');
+            if(!$data['bankname']) return self::setErrorInfo('请输入开户行信息');
+            $mark = '使用银联卡'.$insertData['bank_code'].'提现'.$insertData['extract_price'].'分';
+        }else{
+            if(!$data['weixin']) return self::setErrorInfo('请输入微信号');
+            $mark = '使用微信提现'.$insertData['extract_price'].'分';
+        }
+        self::beginTrans();
+        $res1 = self::set($insertData);
+        if(!$res1) return self::setErrorInfo('提现失败');
+        $res2 = User::edit(['integral'=>$balance],$userInfo['uid'],'uid');
+        $res3 = UserBill::expend('积分提现',$userInfo['uid'],'integral','extract',$data['money'],$res1['id'],$balance,$mark);
+        $res = $res2 && $res3;
+        self::checkTrans($res);
+        if($res){
+            //发送模板消息
+            return true;
+        }
+        else return self::setErrorInfo('提现失败!');
+    }
     public static function userExtract($userInfo,$data){
         if(!in_array($data['extract_type'],self::$extractType))
             return self::setErrorInfo('提现方式不存在');

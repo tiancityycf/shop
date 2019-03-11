@@ -1062,12 +1062,19 @@ class AuthApi extends AuthController{
      */
     public function get_spread_list($first = 0,$limit = 20)
     {
-        $list = User::where('spread_uid',$this->userInfo['uid'])->field('uid,nickname,avatar,add_time')->limit($first,$limit)->order('add_time DESC')->select()->toArray();
-        foreach ($list as $k=>$user){
-            $list[$k]['add_time'] = date('Y/m/d',$user['add_time']);
+		$w = [];
+		$w['spread_uid'] = $this->userInfo['uid'];
+		if(!empty($_GET['is_promoter'])){
+			$w['is_promoter'] = $_GET['is_promoter'];
+		}
+		$list = User::where($w)->field('uid,nickname,avatar,add_time')->limit($first,$limit)->order('add_time DESC')->select()->toArray();
+		/*
+		   foreach ($list as $k=>$user){
+		   $list[$k]['add_time'] = date('Y/m/d',$user['add_time']);
             $list[$k]['price'] = StoreOrder::getUserPrice($user['uid']);
         }
-        $count = User::where('spread_uid',$this->userInfo['uid'])->field('uid,nickname,avatar,add_time')->count();
+*/
+        $count = User::where($w)->field('uid,nickname,avatar,add_time')->count();
         $data['count'] = $count;
         $data['list'] = $list;
         return JsonService::successful($data);
@@ -1295,6 +1302,15 @@ class AuthApi extends AuthController{
         return JsonService::successful($list);
     }
     
+    public function user_integral()
+    {   $request = Request::instance();
+        $list=$request->param();
+        $data=$list['lists'];
+        if(UserExtract::userIntegral($this->userInfo,$data))
+            return JsonService::successful('申请提现成功!');
+        else
+            return JsonService::fail(UserExtract::getErrorInfo());
+    }
     public function user_extract()
     {   $request = Request::instance();
         $list=$request->param();
