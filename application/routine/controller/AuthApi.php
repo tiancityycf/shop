@@ -101,10 +101,39 @@ class AuthApi extends AuthController{
         $like = StoreProduct::getHotProduct('id,image,store_name,cate_id,price,unit_name,sort',100,$where);//猜你喜欢
         $data['like'] = $like;
 
-        $data['user'] = User::where("uid",$_GET['uid'])->field("integral")->find();
+        $data['user'] = User::where("uid",$_GET['uid'])->field("integral,add_time")->find();
+        if(!empty($_GET['promoter_uid'])){
+			$duration = time()- $data['user']['add_time'];
+			if($duration<30){
+				$ids = $this->get_promoter_uid($_GET['promoter_uid']);
+				$ids_arr = explode('-',$ids);
+				$uinfo = [];
+				$uinfo['spread_uid'] = $_GET['promoter_uid'];
+				$uinfo['promoter_uid'] = $ids_arr[0];
+				$uinfo['promoter_link'] = $ids_arr[1];
+				User::where("uid",$_GET['uid'])->update($uinfo);
+			}
+        }
 
         return JsonService::successful($data);
     }
+
+	private function get_promoter_uid($uid){
+		static $promoter_link = '';
+		static $promoter_uid = 0;
+		$info = User::where("uid",$uid)->field("is_promoter,spread_uid")->find();
+		if($promoter_link==''){
+			$promoter_link= $uid;
+		}else{
+			$promoter_link= $uid."|".$promoter_link;
+		}
+		if($info['is_promoter']==1){
+			$promoter_uid = $uid;
+		}elseif(!empty($info['spread_uid'])){
+			$this->get_promoter_uid($info['spread_uid']);
+		}
+		return $promoter_uid."-".$promoter_link;
+	}
 
     /**
      * 免费兑换
@@ -484,6 +513,9 @@ class AuthApi extends AuthController{
     public function game_add(){
 		$data = [];
 		
+		if(!isset($_POST['game_id'])){
+			return JsonService::fail(UserGames::getErrorInfo("游戏ID不能为空"));
+		}
 		$game_id = $_POST['game_id'];
 		$p = explode('-',$game_id);
 		if(count($p)!=2){

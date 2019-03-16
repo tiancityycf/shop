@@ -15,7 +15,7 @@ class RoutineCode{
         $res = RoutineQrcode::setRoutineQrcodeForever($uid,$thirdType,$page,$imgUrl);
         if($res){
             $url = "https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token=".$accessToken;
-            if($uid) $data['scene'] = $res->id;
+            if($uid) $data['scene'] = $uid;
             else $data['scene'] = 0;
             if(empty($color)){
                 $color['r'] = 0;
