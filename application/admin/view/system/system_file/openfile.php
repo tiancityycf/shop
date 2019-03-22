@@ -63,7 +63,7 @@
 
 <script>
     var editor = CodeMirror.fromTextArea(document.getElementById("code"), {  // 标识到textarea
-        value : "http://www.crmeb.com",  // 文本域默认显示的文本
+        value : "http://www.myee.xyz",  // 文本域默认显示的文本
         mode : "{$mode}",  // 模式
         theme : "monokai",  // CSS样式选择
         indentUnit : 2,  // 缩进单位，默认2
