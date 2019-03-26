@@ -403,7 +403,10 @@ class AuthApi extends AuthController{
      * @return \think\response\Json
      */
     public function my(){
-        $this->userInfo['couponCount'] = StoreCouponUser::getUserValidCouponCount($this->userInfo['uid']);
+		if($this->userInfo['spread_uid']>0){
+			$this->userInfo['spread'] = User::get($this->userInfo['spread_uid']);
+		}
+        //$this->userInfo['couponCount'] = StoreCouponUser::getUserValidCouponCount($this->userInfo['uid']);
         $this->userInfo['like'] = StoreProductRelation::getUserIdCollect($this->userInfo['uid']);;
         $this->userInfo['orderStatusNum'] = StoreOrder::getOrderStatusNum($this->userInfo['uid']);
         $this->userInfo['notice'] = UserNotice::getNotice($this->userInfo['uid']);
