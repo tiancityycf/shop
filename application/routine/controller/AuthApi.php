@@ -513,24 +513,26 @@ class AuthApi extends AuthController{
      * @param string $category
      * @return \think\response\Json
      */
-    public function game_add(){
+    public function game_add(Request $request){
 		$data = [];
 		
-		if(!isset($_POST['game_id'])){
+$params = $request->post();
+		if(!isset($params['game_id'])){
 			return JsonService::fail(UserGames::getErrorInfo("游戏ID不能为空"));
 		}
-		$game_id = $_POST['game_id'];
+		$game_id = $params['game_id'];
 		$p = explode('-',$game_id);
-		if(count($p)!=2){
+		if(count($p)<2){
 			return JsonService::fail(UserGames::getErrorInfo("游戏ID错误"));
 		}else{
+$game_end_id = array_pop($p);
 			$conf = config("game_lists");
-			if(!isset($conf[$p[1]])){
+			if(!isset($conf[$game_end_id])){
 				return JsonService::fail(UserGames::getErrorInfo('游戏ID缺少配置'));
 			}
-			$data['game_id'] = $p[1];
-			$data['open_id'] = $p[0];
-			$data['game_name'] = $conf[$p[1]];
+			$data['game_id'] = $game_end_id;
+			$data['open_id'] = implode('-',$p);
+			$data['game_name'] = $conf[$game_end_id];
 			$data['uid'] = $this->userInfo['uid'];
 			$data['add_time'] = time();
 			$res = UserGames::set($data);
