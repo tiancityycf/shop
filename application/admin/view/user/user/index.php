@@ -160,6 +160,12 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">推荐人ID：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="spread_uid" lay-verify="spread_uid" style="width: 100%" autocomplete="off" placeholder="请输入推荐人ID" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <label class="layui-form-label">选择时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" class="layui-input time-w" name="user_time" lay-verify="user_time"  id="user_time" placeholder=" - ">
@@ -262,8 +268,9 @@
                 {field: 'integral', title: '积分',width:'6%',sort:true,event:'integral'},
                 {field: 'spread_uid_nickname', title: '推荐人',width:'6%'},
                 {field: 'sex', title: '性别',width:'4%'},
-                {field: 'add_time', title: '首次访问日期',align:'center',width:'12%'},
-                {field: 'last_time', title: '最近访问日期',align:'center',width:'12%'},
+                {field: 'add_time', title: '首次访问日期',align:'center',width:'10%'},
+                {field: 'last_time', title: '最近访问日期',align:'center',width:'10%'},
+                {field: 'is_promoter', title: '是否金牌会员',width:'4%'},
                 {field: 'status', title: '状态',templet:"#checkboxstatus",width:'6%'},
                 {field: 'user_type', title: '用户类型',templet:'#user_type',width:'6%'},
                 {fixed: 'right', title: '操作', width: '10%', align: 'center', toolbar: '#barDemo'}

@@ -68,6 +68,7 @@ class User extends AuthController
             ['status',''],
             ['pay_count',''],
             ['is_promoter',''],
+            ['spread_uid',''],
             ['order',''],
             ['data',''],
             ['user_type',''],
@@ -97,6 +98,7 @@ class User extends AuthController
         $f[] = Form::number('money','余额')->min(0)->col(12);
         $f[] = Form::radio('integration_status','修改积分',1)->options([['value'=>1,'label'=>'增加'],['value'=>2,'label'=>'减少']])->col(12);
         $f[] = Form::number('integration','积分')->min(0)->col(12);
+        $f[] = Form::number('spread_uid','推荐人ID',$user->getData('spread_uid'))->col(12);
         $f[] = Form::radio('status','状态',$user->getData('status'))->options([['value'=>1,'label'=>'开启'],['value'=>0,'label'=>'锁定']]);
         $f[] = Form::radio('is_promoter','金牌会员',$user->getData('is_promoter'))->options([['value'=>1,'label'=>'开启'],['value'=>0,'label'=>'关闭']]);
         $form = Form::make_post_form('添加用户通知',$f,Url::build('update',array('id'=>$uid)));
@@ -110,6 +112,7 @@ class User extends AuthController
             ['money_status',0],
             ['is_promoter',1],
             ['money',0],
+            ['spread_uid',0],
             ['integration_status',0],
             ['integration',0],
             ['status',0],
@@ -168,6 +171,7 @@ class User extends AuthController
             $res2 = true;
         }
         $edit['status'] = $data['status'];
+        $edit['spread_uid'] = $data['spread_uid'];
         $edit['is_promoter'] = $data['is_promoter'];
         if($edit) $res3 = UserModel::edit($edit,$uid);
         else $res3 = true;
