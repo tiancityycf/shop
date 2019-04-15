@@ -85,7 +85,7 @@ class User extends ModelBasic
      * @return array
      */
     public static function getUserList($where){
-        $model = self::setWherePage(self::setWhere($where),$where,['w.sex','w.province','w.city','u.status','u.is_promoter','u.spread_uid'],['u.nickname','u.uid']);
+        $model = self::setWherePage(self::setWhere($where),$where,['w.sex','w.province','w.city','u.status','u.is_promoter','u.spread_uid','u.promoter_uid'],['u.nickname','u.uid']);
         $list = $model->alias('u')
             ->join('WechatUser w','u.uid=w.uid')
             ->field('u.*,w.country,w.province,w.city,w.sex,w.unionid,w.openid,w.routine_openid,w.groupid,w.tagid_list,w.subscribe,w.subscribe_time')

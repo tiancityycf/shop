@@ -69,6 +69,7 @@ class User extends AuthController
             ['pay_count',''],
             ['is_promoter',''],
             ['spread_uid',''],
+            ['promoter_uid',''],
             ['order',''],
             ['data',''],
             ['user_type',''],

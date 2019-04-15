@@ -166,6 +166,12 @@
                             </div>
                         </div>
                         <div class="layui-inline">
+                            <label class="layui-form-label">所属金牌会员ID：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="promoter_uid" lay-verify="promoter_uid" style="width: 100%" autocomplete="off" placeholder="请输入所属金牌会员ID" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <label class="layui-form-label">选择时间：</label>
                             <div class="layui-input-inline">
                                 <input type="text" class="layui-input time-w" name="user_time" lay-verify="user_time"  id="user_time" placeholder=" - ">
@@ -264,13 +270,14 @@
                 {field: 'nickname', title: '姓名'},
                 {field: 'now_money', title: '余额',width:'6%',sort:true,event:'now_money'},
                 {field: 'pay_count', title: '购买次数',align:'center',width:'6%'},
-                {field: 'extract_count_price', title: '累计提现',align:'center',width:'6%'},
+                {field: 'extract_count_price', title: '累计提现',align:'center',width:'5%'},
                 {field: 'integral', title: '积分',width:'6%',sort:true,event:'integral'},
-                {field: 'spread_uid_nickname', title: '推荐人',width:'6%'},
+                {field: 'spread_uid_nickname', title: '推荐人',width:'5%'},
                 {field: 'sex', title: '性别',width:'4%'},
                 {field: 'add_time', title: '首次访问日期',align:'center',width:'10%'},
                 {field: 'last_time', title: '最近访问日期',align:'center',width:'10%'},
-                {field: 'is_promoter', title: '是否金牌会员',width:'4%'},
+                {field: 'is_promoter', title: '是否金牌会员',width:'3%'},
+                {field: 'promoter_uid', title: '所属金牌会员ID',width:'3%'},
                 {field: 'status', title: '状态',templet:"#checkboxstatus",width:'6%'},
                 {field: 'user_type', title: '用户类型',templet:'#user_type',width:'6%'},
                 {fixed: 'right', title: '操作', width: '10%', align: 'center', toolbar: '#barDemo'}
