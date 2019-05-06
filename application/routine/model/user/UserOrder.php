@@ -29,12 +29,12 @@ class UserOrder extends ModelBasic
     public static function getUserOrderList($uid,$status = '',$first = 0,$limit = 8)
     {
         return self::statusByWhere($status)->where('uo.uid',$uid)
-            ->field('uo.id,uo.product_id,uo.add_time,uo.integral,uo.status,sp.image,sp.store_name,sp.store_info')
+            ->field('uo.*,sp.image,sp.store_name,sp.store_info')
             ->order('uo.add_time DESC')->limit($first,$limit)->select()->toArray();
     }
 
     public static function searchUserOrder($uid,$order_id){
-    	return self::statusByWhere()->where('uo.uid',$uid)->where('uo.id',$order_id)->field('uo.id,uo.product_id,uo.add_time,uo.integral,uo.status,sp.image,sp.store_name,sp.store_info')
+    	return self::statusByWhere()->where('uo.uid',$uid)->where('uo.id',$order_id)->field('uo.*,sp.image,sp.store_name,sp.store_info')
             ->order('uo.add_time DESC')->find();
     }
     /**

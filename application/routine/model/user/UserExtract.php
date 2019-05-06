@@ -49,8 +49,8 @@ class UserExtract extends ModelBasic
             'balance'=>$balance,
             'status'=>self::AUDIT_STATUS
         ];
-        if(isset($data['$name'])){
-            $insertData['real_name']=$data['$name'];
+        if(isset($data['name'])){
+            $insertData['real_name']=$data['name'];
         }else{
             $insertData['real_name']='';
         }
@@ -75,7 +75,7 @@ class UserExtract extends ModelBasic
             $mark = '使用支付宝提现'.$insertData['extract_price'].'分';
         }elseif($data['extract_type'] == 'bank'){
             if(!$data['cardnum']) return self::setErrorInfo('请输入银行卡账号');
-            if(!$data['bankname']) return self::setErrorInfo('请输入开户行信息');
+            //if(!$data['bankname']) return self::setErrorInfo('请输入开户行信息');
             $mark = '使用银联卡'.$insertData['bank_code'].'提现'.$insertData['extract_price'].'分';
         }else{
             if(!$data['weixin']) return self::setErrorInfo('请输入微信号');
@@ -108,8 +108,8 @@ class UserExtract extends ModelBasic
             'balance'=>$balance,
             'status'=>self::AUDIT_STATUS
         ];
-        if(isset($data['$name'])){
-            $insertData['real_name']=$data['$name'];
+        if(isset($data['name'])){
+            $insertData['real_name']=$data['name'];
         }else{
             $insertData['real_name']='';
         }
@@ -134,7 +134,7 @@ class UserExtract extends ModelBasic
             $mark = '使用支付宝提现'.$insertData['extract_price'].'元';
         }elseif($data['extract_type'] == 'bank'){
             if(!$data['cardnum']) return self::setErrorInfo('请输入银行卡账号');
-            if(!$data['bankname']) return self::setErrorInfo('请输入开户行信息');
+            //if(!$data['bankname']) return self::setErrorInfo('请输入开户行信息');
             $mark = '使用银联卡'.$insertData['bank_code'].'提现'.$insertData['extract_price'].'元';
         }else{
             if(!$data['weixin']) return self::setErrorInfo('请输入微信号');

@@ -49,8 +49,9 @@ class UserExtract extends ModelBasic
         $uid=$data['uid'];
         $status = -1;
         $User= User::find(['uid'=>$uid])->toArray();
-        UserBill::income('提现失败',$uid,'now_money','extract',$extract_number,$id,$User['now_money'],$mark);
-        User::bcInc($uid,'now_money',$extract_number,'uid');
+        //UserBill::income('提现失败',$uid,'now_money','extract',$extract_number,$id,$User['now_money'],$mark);
+        //User::bcInc($uid,'now_money',$extract_number,'uid');
+/*
         if($User['user_type'] == 'wechat'){
             WechatTemplateService::sendTemplate(WechatUser::uidToOpenid($uid),WechatTemplateService::USER_BALANCE_CHANGE,[
                 'first'=> $mark,
@@ -60,6 +61,7 @@ class UserExtract extends ModelBasic
                 'remark'=>'错误原因:'.$fail_msg
             ],Url::build('wap/my/user_pro',[],true,true));
         }
+*/
 
         return self::edit(compact('fail_time','fail_msg','status'),$id);
     }
@@ -72,6 +74,7 @@ class UserExtract extends ModelBasic
         $mark='成功提现佣金'.$extract_number.'元';
         $uid=$data['uid'];
         $User= User::find(['uid'=>$uid])->toArray();
+/*
         if($User['user_type'] == 'wechat') {
             WechatTemplateService::sendTemplate(WechatUser::uidToOpenid($uid), WechatTemplateService::USER_BALANCE_CHANGE, [
                 'first' => $mark,
@@ -81,6 +84,10 @@ class UserExtract extends ModelBasic
                 'remark' => '点击查看我的佣金明细'
             ], Url::build('wap/my/user_pro', [], true, true));
         }
+*/
+	//$data->status=1;
+	//$data->save();
+        //return true;
         return self::edit(compact('status'),$id);
     }
     //测试数据

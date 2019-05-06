@@ -187,7 +187,7 @@ class UserBill extends ModelBasic
     public static function getOneBalanceChangList($where){
          $list=self::setWhereList(
             $where,
-            ['system_add','pay_product','extract','pay_product_refund','system_sub'],
+            ['system_add','pay_product','extract','pay_product_refund','system_sub','free_buy','game_add'],
             ['FROM_UNIXTIME(add_time,"%Y-%m-%d") as add_time','title','type','mark','number','balance','pm','status'],
             'now_money'
         );
@@ -207,6 +207,12 @@ class UserBill extends ModelBasic
                     break;
                 case 'system_sub':
                     $item['_type']='系统减少';
+                    break;
+                case 'game_add':
+                    $item['_type']='活动获得';
+                    break;
+                case 'free_buy':
+                    $item['_type']='积分兑换';
                     break;
             }
             $item['_pm']=$item['pm']==1 ? '获得': '支出';

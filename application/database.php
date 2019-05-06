@@ -13,19 +13,20 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    //'hostname'        => 'localhost',
-    'hostname'        => 'gz-cdb-7rl1j14d.sql.tencentcdb.com',
+    'hostname'        => 'localhost',
+    //'hostname'        => 'gz-cdb-7rl1j14d.sql.tencentcdb.com',
     // 数据库名
     'database'        => 'shop',
     // 用户名
-    'username'        => 'root',
+    //'username'        => 'root',
+    'username'        => 'shop',
     // 密码
     //'password'        => '',
-    'password'        => '!$AERGERGEFYU!@#',
+    'password'        => '6TCEkmjhSsdZ8mBW',
 
     // 端口
-    //'hostport'        => '3306',
-    'hostport'        => '62072',
+    'hostport'        => '3306',
+    //'hostport'        => '62072',
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数

@@ -98,7 +98,7 @@ class UserExtract extends AuthController
     {
         if(!UserExtractModel::be(['id'=>$id,'status'=>0]))
             return JsonService::fail('操作记录不存在或状态错误!');
-        UserExtractModel::beginTrans();
+        //UserExtractModel::beginTrans();
         $extract=UserExtractModel::get($id);
         if(!$extract)  return JsonService::fail('操作记录不存!');
         if($extract->status==1)  return JsonService::fail('您已提现,请勿重复提现!');

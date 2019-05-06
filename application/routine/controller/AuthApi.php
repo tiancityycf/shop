@@ -29,6 +29,7 @@ use app\routine\model\store\StoreCategory;
 use app\routine\model\store\StoreProduct;
 use app\routine\model\store\StoreSeckill;
 use app\routine\model\user\User;
+use app\routine\model\Kouhong;
 use app\routine\model\user\UserOrder;
 use app\routine\model\user\UserGames;
 use app\routine\model\user\UserNotice;
@@ -114,6 +115,11 @@ class AuthApi extends AuthController{
 				User::where("uid",$_GET['uid'])->update($uinfo);
 			}
         }
+
+	$w = [];
+	$w['uid'] = $_GET['uid'];
+	$w['is_del'] = 0;
+        $data['address'] = UserAddress::where($w)->field("*,concat(province,city,district,detail,' ',real_name,' ',phone) as addr")->select();
 
         return JsonService::successful($data);
     }
@@ -516,7 +522,7 @@ class AuthApi extends AuthController{
     public function game_add(Request $request){
 		$data = [];
 		
-$params = $request->post();
+		$params = $request->post();
 		if(!isset($params['game_id'])){
 			return JsonService::fail(UserGames::getErrorInfo("游戏ID不能为空"));
 		}
@@ -536,6 +542,14 @@ $game_end_id = array_pop($p);
 			$data['uid'] = $this->userInfo['uid'];
 			$data['add_time'] = time();
 			$res = UserGames::set($data);
+
+			$args = [];
+			if($this->userInfo['promoter_uid']>0){
+				$args['uid'] = $this->userInfo['promoter_uid'];
+				$args['open_id'] = $data['open_id'];
+				$kh = new Kouhong();
+				$kh->invite_gold_uid($args);
+			}
 			if(!$res) return JsonService::fail(UserGames::getErrorInfo());
 			else return JsonService::successful();
 		}
@@ -1239,14 +1253,14 @@ $game_end_id = array_pop($p);
     }
 
     /**
-     * 用户通知
+     * 常见问题
      * @param int $page
      * @param int $limit
      * @return \think\response\Json
      */
-    public function get_notice_list($page = 0, $limit = 8)
+    public function get_notice_list()
     {
-        $list = UserNotice::getNoticeList($this->userInfo['uid'],$page,$limit);
+        $list = UserNotice::getNotices();
         return JsonService::successful($list);
     }
 
@@ -2015,6 +2029,7 @@ $game_end_id = array_pop($p);
         $data =  SystemConfig::getValue('site_service_phone');
         return JsonService::successful($data);
     }
+
 
     /**
      * 获取产品链接的二维码

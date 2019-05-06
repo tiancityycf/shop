@@ -10,6 +10,7 @@ namespace app\routine\model\store;
 
 use app\admin\model\store\StoreProductAttrValue as StoreProductAttrValuemodel;
 use app\admin\model\user\User as Usermodel;
+use app\admin\model\user\UserBill as UserBillmodel;
 use app\admin\model\user\UserOrder as UserOrdermodel;
 
 use basic\ModelBasic;
@@ -99,13 +100,21 @@ class StoreProduct extends ModelBasic
         Usermodel::beginTrans();
         $info = Usermodel::where("uid",$request['uid'])->lock(true)->find();
 
-        if($model['price']>$info['integral']){
+	$num = empty($request['num'])?1:$request['num'];
+	$address_id = $request['address_id'];
+	$total = $num * $model['price'];
+
+        if(empty($address_id)){
+            Usermodel::rollbackTrans();
+            return ['errcode'=>1,'errmsg'=>'请选择收货地址'];
+        }
+        if($total>$info['integral']){
             Usermodel::rollbackTrans();
             return ['errcode'=>1,'errmsg'=>'积分不足'];
         }
         try{
             $udata = [];
-            $udata['integral'] = ['dec',$model['price']];
+            $udata['integral'] = ['dec',$total];
             $uwhere = [];
             $uwhere['uid'] = $request['uid'];
             Usermodel::update($udata,$uwhere);
@@ -113,8 +122,23 @@ class StoreProduct extends ModelBasic
             $data['uid'] = $request['uid'];
             $data['add_time'] = time();
             $data['product_id'] = $request['product_id'];
-            $data['integral'] = $model['price'];
+            $data['address_id'] = $address_id;
+            $data['integral'] = $total;
+            $data['num'] = $num;
             UserOrdermodel::set($data);
+            $data = [];
+            $data['uid'] = $request['uid'];
+            $data['link_id'] = 1; 
+            $data['pm'] = 0; 
+            $data['title'] = '积分兑换'; 
+            $data['category'] = 'integral'; 
+            $data['type'] = 'free_buy'; 
+            $data['add_time'] = time();
+            $data['number'] = $total;
+            $data['balance'] = $total;
+            $data['mark'] = '积分兑换消耗了'.$total.'积分';
+            $data['status'] = 1;
+            UserBillmodel::set($data);
             Usermodel::commitTrans();
         }catch (\Exception $e){
             Usermodel::rollbackTrans();

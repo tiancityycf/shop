@@ -42,7 +42,8 @@ trait ModelTrait
     {
         $model = new self;
         if(!$field) $field = $model->getPk();
-        return false !== $model->update($data,[$field=>$id]);
+	$update = $model->update($data,[$field=>$id]);
+        return false !== $update;
     }
 
     /**

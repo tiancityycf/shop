@@ -19,6 +19,10 @@ use basic\ModelBasic;
 class UserNotice extends ModelBasic
 {
     use ModelTrait;
+    public static function getNotices(){
+        $notice = self::order("id desc")->select();
+        return $notice;
+    }
     public static function getNotice($uid){
         $count_notice = self::where('uid','like',"%,$uid,%")->where("is_send",1)->count();
         $see_notice = UserNoticeSee::where("uid",$uid)->count();

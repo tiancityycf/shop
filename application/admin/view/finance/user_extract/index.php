@@ -28,14 +28,13 @@
                             </select>
                             <select name="extract_type"  class="form-control input-sm">
                                 <option value="">提现方式</option>
-                                <option value="alipay" {eq name="where.extract_type" value="alipay" }selected="selected"{/eq}>支付宝</option>
                                 <option value="bank" {eq name="where.extract_type" value="bank"}selected="selected"{/eq}>银行卡</option>
                             </select>
                             <div class="input-group">
 
 
                                   <span class="input-group-btn">
-                                        <input type="text" name="nireid" value="{$where.nireid}" placeholder="微信昵称/姓名/支付宝账号/银行卡号" class="input-sm form-control" size="38">
+                                        <input type="text" name="nireid" value="{$where.nireid}" placeholder="银行卡号" class="input-sm form-control" size="38">
                                     <button type="submit" class="btn btn-sm btn-primary"> 搜索</button>
                                      </span>
 
@@ -61,7 +60,7 @@
 
                             <th class="text-center">编号</th>
                             <th class="text-center">用户信息</th>
-                            <th class="text-center">提现金额</th>
+                            <th class="text-center">提现积分</th>
                             <th class="text-center">提现方式</th>
                             <th class="text-center">添加时间</th>
                             <th class="text-center">备注</th>
@@ -106,7 +105,7 @@
                                 <br/>
                                  银行开户地址:{$vo.bank_address}
                                 {else/}
-                                  支付宝号:{$vo.alipay_code}
+                                  微信号:{$vo.wechat}
                                 {/if}
                             </td>
                             <td class="text-center">
@@ -146,7 +145,7 @@
 
                             <td class="text-center">
 
-                                <button class="btn btn-info btn-xs" type="button"  onclick="$eb.createModalFrame('编辑','{:Url('edit',array('id'=>$vo['id']))}')"><i class="fa fa-paste"></i> 编辑</button>
+                                <!--<button class="btn btn-info btn-xs" type="button"  onclick="$eb.createModalFrame('编辑','{:Url('edit',array('id'=>$vo['id']))}')"><i class="fa fa-paste"></i> 编辑</button> -->
 
 <!--                                <button class="btn btn-warning btn-xs" data-url="{:Url('delete',array('id'=>$vo['id']))}" type="button"><i class="fa fa-warning"></i> 删除</button>-->
 
